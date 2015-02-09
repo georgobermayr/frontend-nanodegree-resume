@@ -31,7 +31,7 @@ var education = {
         "CS"
       ],
       "dates": 2002,
-      "url": "http://rspaf.de"
+      "url": "http://www.rspaf.de"
     }
   ],
   "onlineCourses": [
@@ -39,13 +39,13 @@ var education = {
       "title": "Intro to HTML and CSS",
       "school": "Udacity",
       "dates": 2015,
-      "url": "http://udacity.com"
+      "url": "http://www.udacity.com"
     },
     {
       "title": "Various JavaScript, HMTL and CSS courses",
       "school": "Codeschool",
       "dates": 2014,
-      "url": "http://codeschool.com"
+      "url": "http://www.codeschool.com"
     }
   ]
 };
@@ -112,6 +112,7 @@ bio.display = function() {
     var thisContact = HTMLcontactGeneric.replace("%contact%", contact);
     var thisContact = thisContact.replace("%data%", bio.contacts[contact]);
     $("#topContacts").append(thisContact);
+    $("#footerContacts").append(thisContact);
   }
 
   // Output picture
@@ -199,38 +200,76 @@ projects.display();
 // Output education data
 
 education.display = function() {
+  // First the schools
+  for (school in education.schools) {
 
+    $("#education").append(HTMLschoolStart);
+
+    // Get name and degree, concat them and output
+    var formattedName = HTMLschoolName.replace("%data%", education.schools[school].name);
+    var formattedName = formattedName.replace("#", education.schools[school].url);
+    var formattedDegree = HTMLschoolDegree.replace("%data%", education.schools[school].degree);
+    var formattedNameAndDegree = formattedName + formattedDegree;
+    $(".education-entry:last").append(formattedNameAndDegree);
+
+    // Output dates
+    var formattedDates = HTMLschoolDates.replace("%data%", education.schools[school].dates);
+    $(".education-entry:last").append(formattedDates);
+
+    // Output location
+    var formattedLocation = HTMLschoolLocation.replace("%data%", education.schools[school].location);
+    $(".education-entry:last").append(formattedLocation);
+
+    // Loop through and output majors
+    for (major in education.schools[school].majors) {
+      var formattedMajor = HTMLschoolMajor.replace("%data%", education.schools[school].majors[major]);
+      $(".education-entry:last").append(formattedMajor);
+    }
+  };
+
+  // Insert header for Online Courses
+  $("#education").append(HTMLonlineClasses);
+  $("#education").append(HTMLschoolStart);
+
+  //Output online courses
+  for (onlineCourse in education.onlineCourses) {
+
+    // Get name and degree, concat them and output
+    var formattedName = HTMLonlineTitle.replace("%data%", education.onlineCourses[onlineCourse].title);
+    var formattedName = formattedName.replace("#", education.onlineCourses[onlineCourse].url);
+    var formattedSchool = HTMLonlineSchool.replace("%data%", education.onlineCourses[onlineCourse].school);
+    var formattedNameAndSchool = formattedName + formattedSchool;
+    $(".education-entry:last").append(formattedNameAndSchool);
+
+    // Output dates
+    var formmattedDates = HTMLonlineDates.replace("%data%", education.onlineCourses[onlineCourse].dates);
+    $(".education-entry:last").append(formmattedDates);
+
+    // Output online school URL
+    var formattedURL = HTMLonlineURL.replace("%data%", education.onlineCourses[onlineCourse].url);
+    $(".education-entry:last").append(formattedURL);
+  }
 }
 
+education.display();
 
-// $(document).click(function(loc) {
-//   var xcoordiante = loc.pageX;
-//   var ycoordinate = loc.pageY;
-//   console.log("X: "+xcoordiante+", Y: "+ycoordinate);
-// });
 
-$("#main").append(internationalizeButton);
 
-function inName () {
-  var nameArray = name.split(" ");
-  var firstname = nameArray[0].slice(0,1).toUpperCase() + nameArray[0].slice(1).toLowerCase();
-  var surname = nameArray[1].toUpperCase();
+// NOT IN USE:
+// Internationalize Function for name
 
-  var internationalName = firstname + " " + surname;
+// $("#main").append(internationalizeButton);
 
-  return internationalName;
-}
+// function inName () {
+//   var nameArray = name.split(" ");
+//   var firstname = nameArray[0].slice(0,1).toUpperCase() + nameArray[0].slice(1).toLowerCase();
+//   var surname = nameArray[1].toUpperCase();
+
+//   var internationalName = firstname + " " + surname;
+
+//   return internationalName;
+// }
 
 
 
 $("#mapDiv").append(googleMap);
-
-// $("#bio").append(bio.name);
-// $("#bio").append(bio.role);
-// $("#bio").append(bio.contactInfo);
-// $("#bio").append(bio.contacts.phone);
-// $("#bio").append(bio.contacts.mobile);
-// $("#bio").append(bio.picture);
-// $("#bio").append(bio.message);
-// $("#bio").append(bio.skills);
-
