@@ -78,7 +78,7 @@ var projects = {
       "dates": "2014/01 – 2014/04",
       "description": "Implementing a tablet magazin application for a German turbine manufacturer. Avialable for iOS, Android and Kindle fire",
       "images": [
-        "images/MTU-App_Titel.jpg", "images/MTU-App_Artikel-iPad.jpg", "images/MTU-App-Android.jpg"
+        "images/MTU-App_Titel.jpg", "images/MTU-App-Android.jpg"
       ]
     },
     {
@@ -86,7 +86,7 @@ var projects = {
       "dates": "2013/08 – 2013/11",
       "description": "Designing and implementing a calculator app for a manufacturer of desicants.",
       "images": [
-        "images/Clariant_App-Rechner.jpg", "images/Clariant_App-Rechner-2.jpg", "images/Clariant_App_Landkarte.jpg"
+        "images/Clariant_App-Rechner-2.jpg", "images/Clariant_App_Landkarte.jpg"
       ]
     }
   ]
@@ -108,7 +108,7 @@ bio.display = function() {
   $("#header").prepend(formattedName);
 
   // Using the generic snippet to easier deal with changing contacts in source data
-  for (contact in bio.contacts){
+  for (contact in bio.contacts) {
     var thisContact = HTMLcontactGeneric.replace("%contact%", contact);
     var thisContact = thisContact.replace("%data%", bio.contacts[contact]);
     $("#topContacts").append(thisContact);
@@ -170,7 +170,7 @@ work.display();
 
 projects.display = function() {
   // Loop through each project
-  for (project in projects.projects){
+  for (project in projects.projects) {
     $("#projects").append(HTMLprojectStart);
 
     // Output project title
@@ -185,12 +185,13 @@ projects.display = function() {
     var projectDescription = HTMLprojectDescription.replace("%data%", projects.projects[project].description)
     $(".project-entry:last").append(projectDescription);
 
-    // Looping through each image in this project and output them
-    for (image in projects.projects[project].images){
-      var projectImages = HTMLprojectImage.replace("%data%", projects.projects[project].images[image]);
-      $(".project-entry:last").append(projectImages);
+    // Looping through each image in this project and output them, first check if images are available
+    if (projects.projects[project].images.length > 0) {
+      for (image in projects.projects[project].images) {
+        var projectImages = HTMLprojectImage.replace("%data%", projects.projects[project].images[image]);
+        $(".project-entry:last").append(projectImages);
+      }
     }
-
   }
 }
 
@@ -220,10 +221,12 @@ education.display = function() {
     var formattedLocation = HTMLschoolLocation.replace("%data%", education.schools[school].location);
     $(".education-entry:last").append(formattedLocation);
 
-    // Loop through and output majors
-    for (major in education.schools[school].majors) {
-      var formattedMajor = HTMLschoolMajor.replace("%data%", education.schools[school].majors[major]);
-      $(".education-entry:last").append(formattedMajor);
+    // Loop through and output majors, first check if majors are available
+    if (education.schools[school].majors.length > 0) {
+      for (major in education.schools[school].majors) {
+        var formattedMajor = HTMLschoolMajor.replace("%data%", education.schools[school].majors[major]);
+        $(".education-entry:last").append(formattedMajor);
+      }
     }
   };
 
@@ -254,6 +257,10 @@ education.display = function() {
 education.display();
 
 
+// DISPLAY GOOGLE MAP
+
+$("#mapDiv").append(googleMap);
+
 
 // NOT IN USE:
 // Internationalize Function for name
@@ -271,5 +278,3 @@ education.display();
 // }
 
 
-
-$("#mapDiv").append(googleMap);
